@@ -1,2 +1,2 @@
 # ContainerCraft-22
-Hands-on practices ontainerizing software systems
+Hands-on practices for containerizing software systems
