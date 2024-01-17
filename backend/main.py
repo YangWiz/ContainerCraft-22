@@ -12,7 +12,7 @@ ENV_VAR_DB_USERNAME = "DB_USERNAME"
 ENV_VAR_DB_PASSWORD = "DB_PASSWORD"
 
 db_host = os.getenv(ENV_VAR_DB_HOST, "localhost")
-db_port = os.getenv(ENV_VAR_DB_PORT, "32773")
+db_port = os.getenv(ENV_VAR_DB_PORT, "31773")
 db_username = os.getenv(ENV_VAR_DB_USERNAME, "postgres")
 db_password = os.getenv(ENV_VAR_DB_PASSWORD, "test")
 

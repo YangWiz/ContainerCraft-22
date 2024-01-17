@@ -1,0 +1,4 @@
+# pixi environments
+.pixi
+.env.production
+./__pycache__
