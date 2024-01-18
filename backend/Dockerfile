@@ -10,6 +10,6 @@ COPY *.py ./
 RUN pacman -Sy pixi --noconfirm
 RUN pixi install
 
-EXPOSE 5000
+EXPOSE 2333 
 
-CMD ["pixi", "run", "uvicorn", "main:app"]
+CMD ["pixi", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "2333"]
