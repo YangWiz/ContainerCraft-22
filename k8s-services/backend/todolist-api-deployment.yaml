@@ -16,6 +16,17 @@ spec:
     spec:
       containers:
       - name: todolist-backend
-        image: yanghoo/todolist-backend:v1.0.0
+        image: yanghoo/todolist-backend:v1.0.1
         ports:
         - containerPort: 2333 
+        envFrom:
+          - configMapRef:
+              name: todolist-api-config
+          - configMapRef:
+              name: postgres-config
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_PASSWORD
