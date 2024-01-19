@@ -1,9 +1,8 @@
-apiVersion: app/v1
-kind: Deployment
+apiVersion: apps/v1
+kind: Deployment 
 metadata:
   name: postgres-deployment
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -14,23 +13,24 @@ spec:
     spec:
       containers:
       - name: postgres-container
-        image: postgres:13.1-alpine
+        image: postgres:latest
         imagePullPolicy: "IfNotPresent"
         ports:
           - containerPort: 5432
-        envForm:
-          - ConfigMapRef:
-            name: postgres-config
+            name: db
+        envFrom:
+          - configMapRef:
+              name: postgres-config
         env:
           - name: POSTGRES_PASSWORD
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 name: postgres-secret
                 key: POSTGRES_PASSWORD
         volumeMounts:
           - mountPath: /var/lib/postgres/data
             name: postgredb
-    volumes:
-      - name: postgredb
-        PersistentVolumeClaim:
-          claimName: postgres-pv-claim
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
