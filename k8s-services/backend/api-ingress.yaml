@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todolist-api-ingress
+spec:
+  rules:
+    - host: todolist.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                  name: todolist-api-lb
+                  port:
+                    number: 8090
