@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: todolist-backend
-        image: yanghoo/todolist-backend:v1.0.1
+        image: yanghoo/todolist-backend:v1.0.2
         ports:
         - containerPort: 2333 
         envFrom:
