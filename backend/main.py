@@ -6,6 +6,7 @@ from models import Base
 import logging
 import models
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 logging.basicConfig(filename="todolist.log",
                     filemode='a',
@@ -23,15 +24,30 @@ ENV_VAR_DB_PASSWORD = "POSTGRES_PASSWORD"
 
 db_host = os.getenv(ENV_VAR_DB_HOST, "localhost")
 db_port = os.getenv(ENV_VAR_DB_PORT, "5432")
-db_name = os.getenv(ENV_VAR_DB_NAME, "postgres")
+# db_name = os.getenv(ENV_VAR_DB_NAME, "test")
 db_username = os.getenv(ENV_VAR_DB_USERNAME, "postgres")
 db_password = os.getenv(ENV_VAR_DB_PASSWORD, "test")
 
-db_url = f"postgresql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}"
+db_url = f"postgresql://{db_username}:{db_password}@{db_host}:{db_port}"
 
 logger.info(f"got url from envs: {db_url}")
 psql = db(db_url)
 app = FastAPI()
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost:5173",
+    "http://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/list")
 def read_list(db: Session = Depends(psql.connect)):

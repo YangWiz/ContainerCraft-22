@@ -10,3 +10,8 @@ microk8s kubectl apply -f ./k8s-services/backend/todolist-api-deployment.yaml
 
 # Update docker registry
 sudo docker push yanghoo/todolist-backend:<tag>
+
+# Get the name of the cluster (k8s-services backend folder)
+```
+kubectl config current-context
+```
