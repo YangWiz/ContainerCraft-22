@@ -1,13 +1,19 @@
 <template>
   <div class="todo-list">
-    <h1>My Todo List</h1>
-    <div v-if="loading">Loading...</div>
-    <div v-else>
-      <ul>
+    <h1 class="header">My Todo List</h1>
+    <div v-if="loading" class="loading">Loading...</div>
+    <div v-else class="todo-container">
+      <ul class="todo-items">
         <li v-for="todo in todos" :key="todo.id" class="todo-item">
-          <h2>{{ todo.name }}</h2>
+          <div class="item-header">
+            <h2>{{ todo.name }}</h2>
+            <span class="status" :class="{ 'completed': todo.complete }">{{ todo.complete ? 'Completed' : 'Pending' }}</span>
+            <!-- Toggle Button -->
+            <button @click="toggleComplete(todo)">
+              {{ todo.complete ? 'Mark as Incomplete' : 'Mark as Complete' }}
+            </button>
+          </div>
           <p>{{ todo.description }}</p>
-          <p>Status: <strong>{{ todo.complete ? 'Completed' : 'Pending' }}</strong></p>
         </li>
       </ul>
     </div>
@@ -27,7 +33,7 @@ export default {
     onMounted(async () => {
       loading.value = true;
       try {
-        const response = await axios.get('127.0.0.1:8000');
+        const response = await axios.get('http://localhost:8000/list');
         todos.value = response.data;
       } catch (error) {
         console.error('Error fetching todo list:', error);
@@ -36,30 +42,21 @@ export default {
       }
     });
 
-    return { todos, loading };
+    // Method to toggle the completion status
+    const toggleComplete = async (todo) => {
+      try {
+        const apiPath = todo.complete ? `list/incomplete/${todo.id}` : `list/complete/${todo.id}`;
+        await axios.put(`http://localhost:8000/${apiPath}`);
+
+        // Optimistically update the UI
+        todo.complete = !todo.complete;
+      } catch (error) {
+        console.error('Error updating task status:', error);
+        // Optionally revert the UI change or inform the user
+      }
+    };
+
+    return { todos, loading, toggleComplete };
   }
 };
 </script>
-
-<style>
-.todo-list {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.todo-item {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.todo-item h2 {
-  margin: 0 0 10px 0;
-}
-
-.todo-item p {
-  margin: 0;
-}
-</style>
