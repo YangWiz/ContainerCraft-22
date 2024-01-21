@@ -1,16 +1,29 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: todolist-api-ingress
+  annotations:
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: ca-issuer 
+    cert-manager.io/common-name: Zhiyang Wang
+    cert-manager.io/email-sans: ywa227@student.vu.nl
+    cert-manager.io/subject-organizations: VU Amsterdam
+    cert-manager.io/subject-organizationalunits: Faculty of Science
+    # make sure to redirect every http connections to https connections.
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: api-ingress 
 spec:
   rules:
-    - host: todolist.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                  name: todolist-api-lb
-                  port:
-                    number: 8090
+  - host: yanghoo-todolist.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: api-service 
+            port:
+              number: 23333
+  tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - yanghoo-todolist.com
+    secretName: api-certs # < cert-manager will store the created certificate in this secret.
