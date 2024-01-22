@@ -1,19 +1,22 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import ToDoList from "@/components/ToDoList.vue"
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
+<!--    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />-->
+    <div class="logo">
+      <v-icon size="125">mdi-checkbox-marked-circle-auto-outline</v-icon>
+    </div>
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="To Do List" />
     </div>
   </header>
 
   <main>
-    <TheWelcome />
+    <ToDoList />
+<!--    <TheWelcome />-->
   </main>
 </template>
 
