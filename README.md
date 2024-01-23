@@ -10,3 +10,5 @@ microk8s kubectl apply -f ./k8s-services/backend/todolist-api-deployment.yaml
 
 # Update docker registry
 sudo docker push yanghoo/todolist-backend:<tag>
+
+## TODO(modify container versions in the deployment)

@@ -17,12 +17,20 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: /
+        path: /api
         backend:
           service:
             name: api-service 
             port:
               number: 23333
+
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: ui-service 
+            port:
+              number: 23334 
   tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
   - hosts:
     - yanghoo-todolist.com

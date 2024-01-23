@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todolist-ui-deployment
+  labels:
+    app: todolist-ui
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: todolist-ui
+  template:
+    metadata:
+      labels:
+        app: todolist-ui
+    spec:
+      containers:
+      - name: todolist-ui
+        image: yanghoo/todolist-ui:latest
+        ports:
+        - containerPort: 80 
