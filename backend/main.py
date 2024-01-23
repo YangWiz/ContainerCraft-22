@@ -33,11 +33,11 @@ logger.info(f"got url from envs: {db_url}")
 psql = db(db_url)
 app = FastAPI()
 
-@app.get("/list")
+@app.get("/api/list")
 def read_list(db: Session = Depends(psql.connect)):
     return db.query(models.Item).all()
 
-@app.post("/list")
+@app.post("/api/list")
 def add_item(item: Item, db: Session = Depends(psql.connect)):
     new_item = models.Item(name = item.name, description = item.description, complete = False)
     db.add(new_item)
@@ -45,11 +45,11 @@ def add_item(item: Item, db: Session = Depends(psql.connect)):
     db.refresh(new_item)
     return new_item
 
-@app.get("/list/{item_id}")
+@app.get("/api/list/{item_id}")
 def read_item(item_id: int, db: Session = Depends(psql.connect)):
     return db.query(models.Item).filter(models.Item.id == item_id).first()
 
-@app.delete("/list/{item_id}")
+@app.delete("/api/list/{item_id}")
 def delete_item(item_id: int, db: Session = Depends(psql.connect)):
     curr_item = db.query(models.Item).filter(models.Item.id == item_id).one_or_none()
     if curr_item is None:
@@ -58,7 +58,7 @@ def delete_item(item_id: int, db: Session = Depends(psql.connect)):
     db.commit()
     return curr_item
 
-@app.put("/list")
+@app.put("/api/list")
 def update_item(item: UpdateItem, db: Session = Depends(psql.connect)):
     curr_item = db.query(models.Item).filter(models.Item.id == item.id).one_or_none()
     if curr_item is None:
@@ -72,7 +72,7 @@ def update_item(item: UpdateItem, db: Session = Depends(psql.connect)):
     db.refresh(curr_item)
     return curr_item
 
-@app.put("/list/incomplete/{item_id}")
+@app.put("/api/list/incomplete/{item_id}")
 def mark_task_imcomplete(item_id: int, db: Session = Depends(psql.connect)):
     curr_item = db.query(models.Item).filter(models.Item.id == item_id).one_or_none()
     if curr_item is None:
@@ -85,7 +85,7 @@ def mark_task_imcomplete(item_id: int, db: Session = Depends(psql.connect)):
     db.refresh(curr_item)
     return curr_item
 
-@app.put("/list/complete/{item_id}")
+@app.put("/api/list/complete/{item_id}")
 def mark_task_complete(item_id: int, db: Session = Depends(psql.connect)):
     curr_item = db.query(models.Item).filter(models.Item.id == item_id).one_or_none()
     if curr_item is None:
