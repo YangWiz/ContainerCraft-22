@@ -2,7 +2,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 export let axiosInstance = axios.create({
-  baseURL: 'http://localhost:2333',
+  baseURL: "https://yanghoo-todolist.com/api",
   timeout: 3000,
 })
 

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }} 
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }} 
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "backend.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Values.image.name }} 
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 2333 
+        envFrom:
+          - configMapRef:
+              name: {{ .Values.configmap.name }} 
+          - configMapRef:
+              name: {{ .Values.dbConfigmap.name }} 
+        env:
+          - name: {{ .Values.dbSecret.name }} 
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.dbSecret.data.name }} 
+                key: {{ .Values.dbSecret.data.key }} 

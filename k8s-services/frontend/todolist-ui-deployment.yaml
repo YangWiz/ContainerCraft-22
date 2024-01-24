@@ -16,6 +16,9 @@ spec:
     spec:
       containers:
       - name: todolist-ui
-        image: yanghoo/todolist-ui:latest
+        image: yanghoo/todolist-ui:v1.0.0
         ports:
         - containerPort: 80 
+        envFrom:
+          - configMapRef:
+              name: ui-config

@@ -1,0 +1,4 @@
+global:
+  db_secret: eWFuZ2hvby0xMjM=
+  db_host: postgres-service.default.svc.cluster.local 
+  db_port: "30001"
