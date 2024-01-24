@@ -5,4 +5,4 @@ metadata:
   labels:
     app: todolist-ui
 data:
-  VUE_APP_API_BASE_URL: https://yanghoo-todolist.com/api
+  VITE_APP_API_BASE_URL: https://yanghoo-todolist.com/api
