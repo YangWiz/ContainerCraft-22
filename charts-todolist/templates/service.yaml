@@ -10,6 +10,7 @@ metadata:
     cert-manager.io/subject-organizationalunits: Faculty of Science
     # make sure to redirect every http connections to https connections.
     kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: todolist-app
   name: api-ingress 
 spec:
   rules:

@@ -55,7 +55,7 @@ securityContext: {}
 
 service:
   name: todolist-api-service
-  type: ClusterIP
+  type: NodePort 
   port: 23333
   targetPort: 2333
 
