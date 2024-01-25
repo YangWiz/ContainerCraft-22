@@ -54,7 +54,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  name: todolist-api-service
+  name: api-service
   type: NodePort 
   port: 23333
   targetPort: 2333
