@@ -9,8 +9,8 @@ metadata:
     cert-manager.io/subject-organizations: VU Amsterdam
     cert-manager.io/subject-organizationalunits: Faculty of Science
     # make sure to redirect every http connections to https connections.
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: todolist-app
   name: api-ingress 
 spec:
   rules:
