@@ -24,7 +24,7 @@ spec:
         - containerPort: 2333 
         envFrom:
           - configMapRef:
-              name: {{ .Values.configmap.name }} 
+              name: {{ .Values.apiConfigmap.name }} 
           - configMapRef:
               name: {{ .Values.dbConfigmap.name }} 
         env:
