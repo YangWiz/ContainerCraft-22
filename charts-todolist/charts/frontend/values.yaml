@@ -1,19 +1,14 @@
-# Default values for database.
+# Default values for frontend.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
-
-name: postgres-deployment
-
-storage:
-  pv_name: psql-pv-vol
+replicaCount: 3
 
 image:
-  repository: postgres
-  pullPolicy: IfNotPresent
+  repository: yanghoo/todolist-ui 
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest" 
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -43,8 +38,8 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 30001 
-  targetPort: 5432
+  targetPort: 80
+  port: 23334
 
 ingress:
   enabled: false
