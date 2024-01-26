@@ -14,7 +14,7 @@ metadata:
   name: api-ingress 
 spec:
   rules:
-  - host: yanghoo.online 
+  - host: www.yanghoo.online 
     http:
       paths:
       - pathType: Prefix
@@ -34,5 +34,5 @@ spec:
               number: 23334 
   tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
   - hosts:
-    - yanghoo.online
+    - www.yanghoo.online
     secretName: api-certs # < cert-manager will store the created certificate in this secret.
