@@ -55,7 +55,7 @@ securityContext: {}
 
 service:
   name: api-service
-  type: NodePort 
+  type: ClusterIP 
   port: 23333
   targetPort: 2333
 

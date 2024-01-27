@@ -37,7 +37,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort 
+  type: ClusterIP
   targetPort: 80
   port: 23334
 

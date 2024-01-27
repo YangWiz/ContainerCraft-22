@@ -15,7 +15,7 @@ metadata:
   name: api-ingress 
 spec:
   rules:
-  - host: api.yanghoo.online 
+  - host: www.yanghoo.online 
     http:
       paths:
       - pathType: Prefix
