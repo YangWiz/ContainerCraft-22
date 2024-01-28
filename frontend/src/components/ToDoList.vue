@@ -17,6 +17,7 @@ export default {
     showEditDialog: false,
     snackbarText: '',
     
+  }),
   mounted() {
     this.todos = []
     this.todos = this.mockTodos
