@@ -4,7 +4,6 @@ export default {
   data: () => ({
     todos: [],
     mockTodos: [
-      {}
     ],
     enableMultiSelect: false,
     action: '', // can only be ADD or EDIT
