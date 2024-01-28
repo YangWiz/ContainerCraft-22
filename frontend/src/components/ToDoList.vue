@@ -8,11 +8,15 @@ export default {
     ADD: 'Add',
     EDIT: 'Edit',
     editedItem: {},
+    searchItem: {},
     showMenu: false,
     showDelConfirm: false,
+    showSearch: false,
     showSnackbar: false,
     showEditDialog: false,
+    showSearchResult: false,
     snackbarText: '',
+    searchedResult: {},
   }),
   mounted() {
     this.fetchTodos()
@@ -52,6 +56,21 @@ export default {
       this.editedItem = {...item}
       console.log(this.todos.length)
       this.showEditDialog = true
+    },
+    searchItemById(id) {
+      console.log(id)
+      this.axios.get('/list/' + id)
+        .then(response => {
+          this.showSearchResult = true 
+          this.searchedResult = response.data
+        })
+        .catch(error => {
+          this.notify("Failed to search the item")
+          this.showSearchResult = true 
+          this.searchedResult.name = "test"
+          this.searchedResult.description = "test"
+        })
+      this.showSearch = false
     },
     updateItem(item) {
       const body = {
@@ -113,7 +132,23 @@ export default {
     },
     checkItem(item) {
       item.done = !item.done
-      //TODO: call api
+      if (item.done) {
+        this.axios.put("incomplete/" + item.id)
+          .then(response => {
+            this.notify("item " + item.id + " checked")
+          })
+          .catch(error => {
+            this.notify("failed to check the item")
+          })
+      } else {
+        this.axios.put("complete/" + item.id)
+          .then(response => {
+            this.notify("item " + item.id + " unchecked")
+          })
+          .catch(error => {
+            this.notify("failed to uncheck the item")
+          })
+      }
     },
     toggleMultiSelect() {
       this.enableMultiSelect = !this.enableMultiSelect
@@ -155,8 +190,34 @@ export default {
 
       <v-spacer></v-spacer>
 
-      <v-btn variant="text" icon="mdi-magnify"></v-btn>
+      <v-btn @click="showSearch = true" variant="text" icon="mdi-magnify"></v-btn>
 <!--      TODO: search-->
+
+      <v-dialog v-model="showSearch" width="30%">
+        <v-card>
+        <v-card-title>Search Item</v-card-title>
+        <v-card-text>
+          <v-text-field label="id"
+                        v-model="searchItem.id"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+              color="red"
+              @click="showSearch = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+              color="green"
+              @click="action === searchItemById(searchItem.id)"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      </v-dialog>
 
       <v-dialog v-model="showDelConfirm"
                 width="auto"
@@ -174,6 +235,31 @@ export default {
             <v-btn
                 color="green"
                 @click="delItems()"
+            >
+              OK
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="showSearchResult"
+                width="auto"
+      >
+        <v-card>
+          <v-card-text>The item you searched for:</v-card-text>
+          <v-card-text>name: {{ searchedResult.name }}</v-card-text>
+          <v-card-text>description: {{ searchedResult.description }}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                @click="showSearchResult = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+                color="green"
+                @click="showSearchResult = false"
             >
               OK
             </v-btn>
@@ -233,7 +319,7 @@ export default {
             ></v-checkbox-btn>
             <v-btn :model-value="todo.done"
                    @click="checkItem(todo)"
-                   :icon="todo.done ? 'mdi-check-circle' : 'mdi-circle-outline'"
+                   :icon="todo.done ? 'mdi-circle' : 'mdi-circle-outline'"
                    variant="text"
                    v-else
             ></v-btn>
