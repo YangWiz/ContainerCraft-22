@@ -4,24 +4,7 @@ export default {
   data: () => ({
     todos: [],
     mockTodos: [
-      {
-        id: 1,
-        name: 'Buy milk',
-        description: 'Go to the store and buy milk',
-        done: false,
-      },
-      {
-        id: 2,
-        name: 'Buy eggs',
-        description: 'Go to the store and buy eggs',
-        done: false,
-      },
-      {
-        id: 3,
-        name: 'Buy bread',
-        description: 'Go to the store and buy bread',
-        done: false,
-      },
+      {}
     ],
     enableMultiSelect: false,
     action: '', // can only be ADD or EDIT
@@ -34,38 +17,7 @@ export default {
     showEditDialog: false,
     snackbarText: '',
     
-    
-    files: [
-      {
-        color: 'blue',
-        icon: 'mdi-clipboard-text',
-        subtitle: 'Jan 20, 2014',
-        title: 'Vacation itinerary',
-      },
-      {
-        color: 'amber',
-        icon: 'mdi-gesture-tap-button',
-        subtitle: 'Jan 10, 2014',
-        title: 'Kitchen remodel',
-      },
-    ],
-    folders: [
-      {
-        subtitle: 'Jan 9, 2014',
-        title: 'Photos',
-      },
-      {
-        subtitle: 'Jan 17, 2014',
-        title: 'Recipes',
-      },
-      {
-        subtitle: 'Jan 28, 2014',
-        title: 'Work',
-      },
-    ],
-  }),
   mounted() {
-    console.log('todo Component mounted.')
     this.todos = []
     this.todos = this.mockTodos
     this.fetchTodos()
@@ -74,11 +26,9 @@ export default {
     todos(newVal, oldVal) {
       // add prop "selected" to the new items
       let newItems = newVal.filter(item => !oldVal.includes(item))
-      console.log('new items: ', newItems)
       newItems.forEach(item => {
         item.selected = false
       })
-      console.log('todos changed', oldVal, newVal)
     },
   },
   computed: {
@@ -88,11 +38,9 @@ export default {
       this.axios.get('/list')
           .then(response => {
             this.todos = response.data
-            console.log(response.data)
           })
           .catch(error => {
             this.notify('Error fetching todos')
-            console.log(error)
           })
     },
     notify(msg) {
@@ -101,7 +49,6 @@ export default {
     },
     getSelectedItems() { // not in computed because it doesn't need to be reactive
       const selectedItems = this.todos.filter(item => item.selected)
-      console.log('selected items: ', selectedItems)
       return selectedItems
     },
     showEdit(item) { 
@@ -120,15 +67,12 @@ export default {
           .then(response => {
             this.notify('Item updated')
             this.fetchTodos()
-            console.log(response.data)
           })
           .catch(error => {
             this.notify('Error updating item')
-            console.log(error)
             // for offline testing, update the local todos
             const index = this.todos.findIndex(todo => todo.id === item.id)
             this.todos[index] = item
-            console.log('updated index: ', index)
           })
       this.showEditDialog = false 
     },
@@ -142,11 +86,9 @@ export default {
           .then(response => {
             this.notify('Item added')
             this.fetchTodos()
-            console.log(response.data)
           })
           .catch(error => {
             this.notify('Error adding item')
-            console.log(error)
             // for offline testing
             item.id = this.todos.length + 1
             this.todos.push(item)
@@ -157,11 +99,9 @@ export default {
       this.axios.delete('/list/' + id)
           .then(response => {
             this.notify('Item deleted')
-            console.log(response.data)
           })
           .catch(error => {
             this.notify('Error deleting item')
-            console.log(error)
           })
     },
     delItems() {
@@ -249,6 +189,36 @@ export default {
 <!--      reusing the same dialog for add and edit-->
     </v-toolbar>
 
+    <v-dialog v-model="showEditDialog"
+                    width="30%"
+    >
+      <v-card>
+        <v-card-title>{{ action }} Item</v-card-title>
+        <v-card-text>
+          <v-text-field label="Name"
+                        v-model="editedItem.name"
+          ></v-text-field>
+          <v-text-field label="Description"
+                        v-model="editedItem.description"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+              color="red"
+              @click="showEditDialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+              color="green"
+              @click="action === ADD ? addItem(editedItem) : updateItem(editedItem)"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-list lines="two">
       <v-list-item
           v-for="todo in todos"
@@ -276,36 +246,7 @@ export default {
               icon="mdi-pencil"
               @click="showEdit(todo)"
           ></v-btn>
-          <v-dialog v-model="showEditDialog"
-                    width="30%"
-          >
-            <v-card>
-              <v-card-title>{{ action }} Item</v-card-title>
-              <v-card-text>
-                <v-text-field label="Name"
-                              v-model="editedItem.name"
-                ></v-text-field>
-                <v-text-field label="Description"
-                              v-model="editedItem.description"
-                ></v-text-field>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                    color="red"
-                    @click="showEditDialog = false"
-                >
-                  Cancel
-                </v-btn>
-                <v-btn
-                    color="green"
-                    @click="action === ADD ? addItem(editedItem) : updateItem(editedItem)"
-                >
-                  OK
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          
         </template>
       </v-list-item>
       
