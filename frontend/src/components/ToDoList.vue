@@ -3,8 +3,6 @@ export default {
   name: "ToDoList",
   data: () => ({
     todos: [],
-    mockTodos: [
-    ],
     enableMultiSelect: false,
     action: '', // can only be ADD or EDIT
     ADD: 'Add',
@@ -15,16 +13,14 @@ export default {
     showSnackbar: false,
     showEditDialog: false,
     snackbarText: '',
-    
   }),
   mounted() {
-    this.todos = []
-    this.todos = this.mockTodos
     this.fetchTodos()
   },
   watch: {
     todos(newVal, oldVal) {
       // add prop "selected" to the new items
+      console.log(this.todos.length)
       let newItems = newVal.filter(item => !oldVal.includes(item))
       newItems.forEach(item => {
         item.selected = false
@@ -54,6 +50,7 @@ export default {
     showEdit(item) { 
       this.action = item.id ? this.EDIT : this.ADD
       this.editedItem = {...item}
+      console.log(this.todos.length)
       this.showEditDialog = true
     },
     updateItem(item) {
@@ -94,6 +91,7 @@ export default {
             this.todos.push(item)
           })
       this.showEditDialog = false
+      console.log("add")
     },
     _delItem(id) { // only used internally
       this.axios.delete('/list/' + id)
