@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "database.selectorLabels" . | nindent 6 }} 
+      app: todolist-db
   template:
     metadata:
       labels:
-        {{- include "database.selectorLabels" . | nindent 8 }}
+        app: todolist-db
     spec:
       containers:
       - name: {{ .Values.name }} 

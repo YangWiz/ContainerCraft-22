@@ -10,11 +10,11 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "backend.selectorLabels" . | nindent 6 }}
+      app: todolist-api
   template:
     metadata:
       labels:
-        {{- include "backend.selectorLabels" . | nindent 8 }}
+        app: todolist-api
     spec:
       containers:
       - name: {{ .Values.image.name }} 

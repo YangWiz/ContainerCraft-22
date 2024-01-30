@@ -8,30 +8,32 @@ metadata:
     cert-manager.io/email-sans: ywa227@student.vu.nl
     cert-manager.io/subject-organizations: VU Amsterdam
     cert-manager.io/subject-organizationalunits: Faculty of Science
-    # make sure to redirect every http connections to https connections.
+    # make sure to redirect every http connections to https connections.i
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
   name: api-ingress 
 spec:
+  ingressClassName: nginx
   rules:
   - host: www.yanghoo.online 
     http:
       paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: ui-service 
-            port:
-              number: 23334
-      - pathType: Prefix
-        path: /api
+      - pathType: Prefix 
+        path: /api/ 
         backend:
           service:
             name: api-service 
             port:
               number: 23333
+      - pathType: Prefix 
+        path: / 
+        backend:
+          service:
+            name: ui-service 
+            port:
+              number: 23334
+      
        
   tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
   - hosts:
