@@ -162,7 +162,7 @@ These two lines force the https connection.
 
 ## Update Applications
 #### Rolling upgrade
-To enable the rolling upgrade, we can change the template part of the yaml file.
+To enable the rolling upgrade, we can change the template part of the yaml file and apply it.
 we also can use the kubectl cmd:
 ```
 kubectl set image deployment/<deployment-name> <container-name>=<new-image>:<tag>
