@@ -98,6 +98,7 @@ I've outlined three distinct RBAC roles tailored for different users:
    - Administrators are granted the capability to read and update secrets along with other sensitive information, ensuring they can manage and protect critical data.
 3. Guest
    - Guests are assigned a read-only role, restricting them from modifying any resources, thus ensuring data integrity while allowing information access.
+
 - You can see the details in ./charts-todolist/templates
 
 ## Network Policies
@@ -246,6 +247,20 @@ helm upgrade todolist-app ./ --set deployNew.enalble=true
 kubectl delete deployment <name-of-the-old-deployment>
 ```
 5. Adjust the scale of the new version's application deployments to the required quantity with kubectl scale.
+```
+kubectl scale deployment <deployment-name> --replicas=<number-of-replicas>
+```
+
+## Scale the application horizontally
+Use autoscale to create a HPA
+```
+kubectl autoscale deployment <deployment-name> --min=<min-pods> --max=<max-pods> --cpu-percent=<target-cpu-utilization>
+```
+Then we can use:
+```
+kubectl edit hpa <deployment-hpa>
+```
+We can alter the resource metric from CPU to memory to facilitate an easier demonstration, or scale the application mannually by:
 ```
 kubectl scale deployment <deployment-name> --replicas=<number-of-replicas>
 ```
