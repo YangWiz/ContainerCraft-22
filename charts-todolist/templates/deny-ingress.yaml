@@ -1,4 +1,5 @@
 # deny all incomming connections by default.
+{{ if eq .Values.deny.all "yes" }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -8,3 +9,4 @@ spec:
   podSelector: {}
   policyTypes:
   - Ingress
+{{ end }}

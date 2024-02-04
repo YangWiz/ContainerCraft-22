@@ -3,6 +3,9 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 3
+deployNew:
+  enable: false
+newReplicaCount: 1
 
 image:
   repository: yanghoo/todolist-ui 

@@ -1,17 +1,18 @@
+{{ if eq .Values.deployNew.enable true }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todolist-ui-v1 
+  name: todolist-ui-v2
   labels:
     app: todolist-ui
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.NewReplicaCount }}
   {{- end }}
   selector:
     matchLabels:
       app: todolist-ui
-      version: v1
+      version: v2
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -20,7 +21,7 @@ spec:
       {{- end }}
       labels:
         app: todolist-ui
-        version: v1
+        version: v2
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -33,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:v1.0.7"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -42,7 +43,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
           - name: VERSION
-            value: v1
+            value: v2
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -56,3 +57,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{ end }}

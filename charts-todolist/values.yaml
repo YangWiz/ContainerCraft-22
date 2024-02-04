@@ -1,3 +1,6 @@
 database:
   storage:
     pv_name: psql-pv-volume-1
+
+deny:
+  all: "no"
