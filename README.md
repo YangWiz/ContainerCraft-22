@@ -128,6 +128,35 @@ data:
   tls.key: [TLS_KEY]
 ```
 5. Place all necessary files into the Helm charts templates directory; executing the Helm chart installation will deploy the issuer. 
+6. Configure the ingress so that it can send the csr to issuer
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: ca-issuer 
+    cert-manager.io/common-name: Zhiyang Wang
+    cert-manager.io/email-sans: ywa227@student.vu.nl
+    cert-manager.io/subject-organizations: VU Amsterdam
+    cert-manager.io/subject-organizationalunits: Faculty of Science
+    # make sure to redirect every http connections to https connections.i
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  name: api-ingress 
+spec:
+
+  ...
+
+tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - www.yanghoo.online
+    secretName: api-certs
+```
+These two lines force the https connection.
+- nginx.ingress.kubernetes.io/force-ssl-redirect: "true" 
+- nginx.ingress.kubernetes.io/ssl-passthrough: "true"*
 
 ## Update Applications
 #### Rolling upgrade
