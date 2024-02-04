@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-ui
+spec:
+  podSelector:
+    matchLabels:
+      app: todolist-ui
+  policyTypes: 
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: todolist-api
+  - from:
+    # Allow VPN to connect.
+    - ipBlock:
+        cidr: 192.168.1.0/24
+  - from:
+    # Allow public access via https
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+      - port: 443
+        protocol: TCP
+      - port: 80
+        protocol: TCP 

@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-api
+spec:
+  podSelector:
+    matchLabels:
+      app: todolist-api 
+  policyTypes: 
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: todolist-ui
+  - from:
+    # Allow public access via https
+    - ipBlock:
+        cidr: 0.0.0.0/0
+  - from:
+    - podSelector:
+        matchLabels:
+          app: postgres
+  
+  # Allow dns resolution.
+  - ports:
+    - port: 53
+      protocol: TCP
+    - port: 53
+      protocol: UDP
