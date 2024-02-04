@@ -98,7 +98,7 @@ I've outlined three distinct RBAC roles tailored for different users:
    - Administrators are granted the capability to read and update secrets along with other sensitive information, ensuring they can manage and protect critical data.
 3. Guest
    - Guests are assigned a read-only role, restricting them from modifying any resources, thus ensuring data integrity while allowing information access.
-
+- You can see the details in ./charts-todolist/templates
 
 ## Network Policies
 ##### I have 4 network policies:
@@ -106,6 +106,7 @@ I've outlined three distinct RBAC roles tailored for different users:
 2. Isolate-db: specifies a Kubernetes NetworkPolicy named "isolate-db" to control network traffic for pods labeled as "postgres," allowing only egress to and ingress from pods labeled as "todolist-api." 
 3. Isolate-ui: creates a Kubernetes NetworkPolicy named "isolate-ui" to manage ingress for "todolist-ui" pods, allowing connections only from "todolist-api" pods, a specific VPN network, and public HTTPS access on ports 443 and 80. 
 4. Isolate-api: defines a Kubernetes NetworkPolicy named "isolate-api" to restrict ingress to the "todolist-api" pods, allowing access only from the "todolist-ui" pods, any external HTTPS traffic, and a "postgres" pod, while also permitting DNS resolution on port 53 for both TCP and UDP protocols.
+- You can see the details in ./charts-todolist/templates
 
 ## Cert-manager & OpenSSL 
 In this segment, we employ OpenSSL to create the root certificate, acting as the Certificate Authority (CA). This allows us to install the root certificate on our local computer, enabling a genuine HTTPS connection.
@@ -242,7 +243,7 @@ helm upgrade todolist-app ./ --set deployNew.enalble=true
 ```
 4. Once the new version has been thoroughly tested and verified, remove all deployments of the old version using kubectl delete.
 ```
-kubectl delete deployment (name of the old deployment)
+kubectl delete deployment <name-of-the-old-deployment>
 ```
 5. Adjust the scale of the new version's application deployments to the required quantity with kubectl scale.
 ```
